@@ -1,27 +1,131 @@
 # frozen_string_literal: true
 
-def run_program(program, options = {})
-  index = 0
+module IntCode
+  # Contains instruction logic
+  class Instruction
+    attr_accessor :opcode_addr
+    attr_accessor :program
 
+    def initialize(program, opcode_addr)
+      @program = program
+      @opcode_addr = opcode_addr
+    end
+
+    def parameters
+      raise 'Not implemented'
+    end
+
+    def execute
+      raise 'Not implemented'
+    end
+
+    def next_opcode_addr
+      @opcode_addr + parameters.count + 1 # 1 for the opcode
+    end
+
+    def opcode
+      raise 'Not implemented'
+    end
+
+    def self.create(program, opcode_addr)
+      clazz = INST_MAP[program[opcode_addr]]
+      clazz.new(program, opcode_addr)
+    end
+  end
+
+  # Instruction that takes 2 args and returns a result
+  class BinaryInstruction < IntCode::Instruction
+    def parameters
+      program[(opcode_addr + 1)..(opcode_addr + 3)]
+    end
+
+    def execute
+      program[result_address] = program[arg1_address].send(operator, program[arg2_address])
+      program
+    end
+
+    def opcode
+      1
+    end
+
+    def arg1_address
+      parameters[0]
+    end
+
+    def arg2_address
+      parameters[1]
+    end
+
+    def result_address
+      parameters[2]
+    end
+
+    def operator
+      raise 'Not implemented'
+    end
+  end
+
+  # +
+  class AddInstruction < IntCode::BinaryInstruction
+    def operator
+      :+
+    end
+
+    def opcode
+      1
+    end
+  end
+
+  # *
+  class MultiplyInstruction < IntCode::BinaryInstruction
+    def operator
+      :*
+    end
+
+    def opcode
+      2
+    end
+  end
+
+  # End
+  class HaltInstruction < IntCode::Instruction
+    def parameters
+      []
+    end
+
+    def execute
+      program
+    end
+
+    def opcode
+      99
+    end
+
+    def next_opcode_addr
+      nil
+    end
+  end
+
+  INST_MAP = {
+    1 => IntCode::AddInstruction,
+    2 => IntCode::MultiplyInstruction,
+    99 => IntCode::HaltInstruction
+  }.freeze
+end
+
+def run_program(program, options = {})
   program[1] = options.fetch(:noun, program[1])
   program[2] = options.fetch(:verb, program[2])
 
-  while index < program.size
-    opcode = program[index]
-    address1 = program[index + 1]
-    address2 = program[index + 2]
-    target = program[index + 3]
+  pointer = 0
+  while pointer < program.size
+    instruction = IntCode::Instruction.create(program, pointer)
+    program = instruction.execute
 
-    case opcode
-    when 1
-      program[target] = program[address1] + program[address2]
-    when 2
-      program[target] = program[address1] * program[address2]
-    when 99
-      break
-    end
+    next_addr = instruction.next_opcode_addr
+    break if next_addr.nil?
 
-    index += 4
+    pointer = next_addr
   end
 
   program[0]
