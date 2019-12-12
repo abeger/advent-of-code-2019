@@ -135,6 +135,19 @@ contents = File.read(ARGV[0])
 
 program = contents.strip.split(',').map(&:to_i)
 
-# Restore state
+# Output for 2.1
+# pp run_program(program, noun: 12, verb: 2)
 
-pp run_program(program, noun: 12, verb: 2)
+# Output for 2.2
+TARGET_OUTPUT = 19_690_720
+
+100.times do |noun|
+  output = nil
+  100.times do |verb|
+    output = run_program(program.clone, noun: noun, verb: verb)
+    next unless output == TARGET_OUTPUT
+
+    puts((100 * noun) + verb)
+  end
+  next unless output == TARGET_OUTPUT
+end
