@@ -9,7 +9,18 @@ low_val = ARGV[0]
 high_val = ARGV[1]
 
 def contains_double_digit(password)
-  password =~ /(.)\1/
+  curr_digit = nil
+  count = 0
+  password.chars.each do |digit|
+    if curr_digit != digit
+      return true if count == 2
+
+      count = 0
+      curr_digit = digit
+    end
+    count += 1
+  end
+  count == 2
 end
 
 def ascending_digits(password)
@@ -35,3 +46,5 @@ passwords = (low_val..high_val).select do |val|
 end
 
 puts "#{passwords.count} valid passwords"
+
+# pp passwords
