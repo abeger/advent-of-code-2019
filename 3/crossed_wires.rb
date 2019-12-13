@@ -27,6 +27,7 @@ class Point
     x.abs + y.abs
   end
 
+  # TODO: Rubocop doesn't like A/B/C
   def extend(move)
     case move.direction
     when 'U'
@@ -69,23 +70,36 @@ class Vector
     start_point.x == end_point.x
   end
 
-  def btw?(num, boundary1, boundary2)
-    num.between?(boundary1, boundary2) || num.between?(boundary2, boundary1)
+  # Need these to use between? efficiently
+  def sorted_x
+    @sorted_x ||= [start_point.x, end_point.x].sort
+  end
+
+  def sorted_y
+    @sorted_y ||= [start_point.y, end_point.y].sort
+  end
+
+  def contains?(point)
+    return point.x.between?(sorted_x[0], sorted_x[1]) if point.y == start_point.y
+
+    return point.y.between?(sorted_y[0], sorted_y[1]) if point.x == start_point.x
+
+    false
+  end
+
+  def length
+    Math.sqrt((start_point.x - end_point.x).abs**2 + (start_point.y - end_point.y).abs**2)
   end
 
   def intersection(vec)
     # assuming that lines are not overlapping for now...
-    if horizontal? && vec.vertical?
-      if btw?(start_point.y, vec.start_point.y, vec.end_point.y) &&
-         btw?(vec.start_point.x, start_point.x, end_point.x)
-        Point.new(start_point.y, vec.start_point.x)
-      end
-    elsif vertical? && vec.horizontal?
-      if btw?(start_point.x, vec.start_point.x, vec.end_point.x) &&
-         btw?(vec.start_point.y, start_point.y, end_point.y)
-        Point.new(start_point.x, vec.start_point.y)
-      end
-    end
+    cand1 = Point.new(start_point.x, vec.start_point.y)
+    return cand1 if vec.contains?(cand1) && contains?(cand1)
+
+    cand2 = Point.new(vec.start_point.x, start_point.y)
+    return cand2 if vec.contains?(cand2) && contains?(cand2)
+
+    nil
   end
 
   def to_s
@@ -95,26 +109,10 @@ end
 
 # Represents all the points touched by the wire
 class Wire
-  attr_reader :path
-
   ORIGIN = Point.new(0, 0)
 
-  def initialize
-    @path = []
-  end
-
-  def current_location
-    path.last
-  end
-
-  def extend(move)
-    @path << Vector.new(end_point, end_point.extend(move))
-  end
-
-  def end_point
-    return ORIGIN if path.empty?
-
-    path.last.end_point
+  def initialize(move_list)
+    @move_list = move_list
   end
 
   def crosses(wire)
@@ -130,26 +128,86 @@ class Wire
   def to_s
     path.join(', ')
   end
-end
 
-contents = File.readlines(ARGV[0])
+  def path
+    @path ||= lay_out
+  end
 
-moves_list = contents.map do |line|
-  line.strip.split(',').map do |entry|
-    Move.new(entry)
+  def signal_delay(point)
+    distance = 0
+    path.each do |vector|
+      if vector.contains?(point)
+        distance += Vector.new(vector.start_point, point).length
+        break
+      else
+        distance += vector.length
+      end
+    end
+    distance
+  end
+
+  private
+
+  # Lay out the wire based on a move list
+  def lay_out
+    layout = []
+    @move_list.each do |move|
+      end_point = layout.empty? ? ORIGIN : layout.last.end_point
+      layout << Vector.new(end_point, end_point.extend(move))
+    end
+    layout
   end
 end
+
+# Methods to perform on a pair of wires
+class WirePair
+  attr_reader :wire1, :wire2
+
+  def initialize(wire1, wire2)
+    @wire1 = wire1
+    @wire2 = wire2
+  end
+
+  def closest_manhattan_intersection
+    manhattan_distances.min
+  end
+
+  def lowest_signal_delay
+    signal_delays.min
+  end
+
+  private
+
+  def manhattan_distances
+    intersections.map(&:manhattan_distance)
+  end
+
+  def signal_delays
+    intersections.map do |int|
+      wire1.signal_delay(int) + wire2.signal_delay(int)
+    end
+  end
+
+  def intersections
+    wire1.crosses(wire2)
+  end
+end
+
+def parse_moves(file_contents)
+  file_contents.map do |line|
+    line.strip.split(',').map do |entry|
+      Move.new(entry)
+    end
+  end
+end
+
+moves_list = parse_moves(File.readlines(ARGV[0]))
 
 wires = moves_list.map do |moves|
-  wire = Wire.new
-  moves.each do |move|
-    wire.extend(move)
-  end
-  wire
+  Wire.new(moves)
 end
 
-cross_list = wires[0].crosses(wires[1])
+wire_pair = WirePair.new(wires[0], wires[1])
 
-distance_list = cross_list.map(&:manhattan_distance)
-
-puts "Closest cross is #{distance_list.min}"
+puts "Closest cross is #{wire_pair.closest_manhattan_intersection}"
+puts "Lowest signal delay is #{wire_pair.lowest_signal_delay}"

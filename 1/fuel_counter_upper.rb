@@ -16,5 +16,4 @@ total_fuel = module_masses.sum do |mass|
   module_fuel(mass.to_f)
 end
 
-
 puts "Total fuel needed:  #{total_fuel}"
