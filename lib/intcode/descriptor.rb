@@ -1,0 +1,26 @@
+# frozen_string_literal: true
+
+module Intcode
+  # Descriptor is 3 param switches [0-1].
+  # Param switches are laid out "321".
+  # Params followed by 2-digit opcode.
+  class Descriptor
+    def initialize(code)
+      @code = code
+    end
+
+    # pad the code out to 5 digits
+    def code
+      @code.rjust(5, '0')
+    end
+
+    def opcode
+      @code[3..4].to_i
+    end
+
+    def immediate_param?(param_no)
+      index = 3 - param_no
+      @code[index] == '1'
+    end
+  end
+end
