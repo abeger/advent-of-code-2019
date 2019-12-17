@@ -27,7 +27,6 @@ class Point
     x.abs + y.abs
   end
 
-  # TODO: Rubocop doesn't like A/B/C
   def extend(move)
     case move.direction
     when 'U'

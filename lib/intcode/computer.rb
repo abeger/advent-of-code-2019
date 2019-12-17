@@ -33,10 +33,9 @@ module Intcode
       program[0]
     end
 
-    # receive input, send to instructions as needed
-    def input(instruction)
-      data = gets
-      instruction.input(data)
+    # receive input
+    def input
+      gets
     end
 
     # output any data sent from instructions
