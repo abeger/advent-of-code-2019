@@ -4,12 +4,14 @@ module Intcode
   module Instruction
     # Parent Instruction class. Abstract.
     class Base
-      attr_accessor :opcode_addr
-      attr_accessor :program
+      attr_reader :computer
+      attr_reader :program
+      attr_reader :command_addr
 
-      def initialize(program, opcode_addr)
+      def initialize(computer, program, command_addr)
+        @computer = computer
         @program = program
-        @opcode_addr = opcode_addr
+        @command_addr = command_addr
       end
 
       def parameters
@@ -20,17 +22,22 @@ module Intcode
         raise 'Not implemented'
       end
 
-      def next_opcode_addr
-        @opcode_addr + parameters.count + 1 # 1 for the opcode
+      def next_command_addr
+        @command_addr + parameters.count + 1 # 1 for the command
       end
 
       def opcode
         raise 'Not implemented'
       end
 
-      def self.create(program, opcode_addr)
-        clazz = INST_MAP[program[opcode_addr]]
-        clazz.new(program, opcode_addr)
+      def command
+        Command.new(program[@command_addr])
+      end
+
+      def self.create(computer, program, command_addr)
+        command = Command.new(program[command_addr])
+        clazz = INST_MAP[command.opcode]
+        clazz.new(computer, program, command_addr)
       end
     end
   end

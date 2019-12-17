@@ -1,10 +1,20 @@
 # frozen_string_literal: true
 
-RSpec.describe Intcode::Descriptor do
+RSpec.describe Intcode::Command do
   describe '#code' do
     it 'pads correctly' do
       desc = described_class.new('123')
       expect(desc.code).to eq('00123')
+    end
+
+    it 'handles ints' do
+      desc = described_class.new(23)
+      expect(desc.code).to eq('00023')
+    end
+
+    it 'handles 1' do
+      desc = described_class.new('1')
+      expect(desc.code).to eq('00001')
     end
   end
 
@@ -17,6 +27,11 @@ RSpec.describe Intcode::Descriptor do
     it 'deals with leading 0' do
       desc = described_class.new('11005')
       expect(desc.opcode).to eq(5)
+    end
+
+    it 'handles 1' do
+      desc = described_class.new('1')
+      expect(desc.opcode).to eq(1)
     end
   end
 

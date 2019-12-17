@@ -18,7 +18,7 @@ module Intcode
         99
       end
 
-      def next_opcode_addr
+      def next_command_addr
         nil
       end
     end

@@ -7,24 +7,24 @@ module Intcode
     # Instruction that takes 2 args and returns a result
     class Binary < Intcode::Instruction::Base
       def parameters
-        program[(opcode_addr + 1)..(opcode_addr + 3)]
+        program[(command_addr + 1)..(command_addr + 3)]
       end
 
       def execute
-        program[result_address] = program[arg1_address].send(operator, program[arg2_address])
+        program[result_address] = arg1_value.send(operator, arg2_value)
         program
       end
 
-      def opcode
-        1
+      def arg1_value
+        return parameters[0] if command.immediate_param?(1)
+
+        program[parameters[0]]
       end
 
-      def arg1_address
-        parameters[0]
-      end
+      def arg2_value
+        return parameters[1] if command.immediate_param?(2)
 
-      def arg2_address
-        parameters[1]
+        program[parameters[1]]
       end
 
       def result_address
