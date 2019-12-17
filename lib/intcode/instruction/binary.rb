@@ -37,5 +37,3 @@ module Intcode
     end
   end
 end
-
-

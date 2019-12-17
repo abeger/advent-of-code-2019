@@ -35,7 +35,8 @@ module Intcode
 
     # receive input
     def input
-      gets
+      print 'Enter input: '
+      $stdin.gets
     end
 
     # output any data sent from instructions

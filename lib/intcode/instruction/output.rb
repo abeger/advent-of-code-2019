@@ -12,6 +12,7 @@ module Intcode
 
       def execute
         computer.output(arg1_value)
+        program
       end
 
       def arg1_value

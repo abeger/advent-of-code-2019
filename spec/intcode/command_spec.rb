@@ -42,5 +42,12 @@ RSpec.describe Intcode::Command do
       expect(desc.immediate_param?(2)).to be true
       expect(desc.immediate_param?(3)).to be true
     end
+
+    it 'works for 1001' do
+      desc = described_class.new('1001')
+      expect(desc.immediate_param?(1)).to be false
+      expect(desc.immediate_param?(2)).to be true
+      expect(desc.immediate_param?(3)).to be false
+    end
   end
 end

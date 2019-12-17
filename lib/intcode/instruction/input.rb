@@ -11,7 +11,7 @@ module Intcode
       end
 
       def execute
-        program[result_address] = computer.input
+        program[result_address] = computer.input.to_i
         program
       end
 

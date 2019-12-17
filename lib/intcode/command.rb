@@ -20,7 +20,7 @@ module Intcode
 
     def immediate_param?(param_no)
       index = 3 - param_no
-      @code[index] == '1'
+      code[index] == '1'
     end
   end
 end
