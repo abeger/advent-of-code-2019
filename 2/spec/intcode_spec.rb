@@ -23,9 +23,17 @@ RSpec.describe Intcode::Computer do
     end
   end
 
-  it 'finds the correct solution to part 1' do
-    program_text = File.read(__dir__ + '/../input.txt')
-    result = Intcode::Computer.new(program_text).run(12, 2)
-    expect(result).to eq(12_490_719)
+  context 'puzzles' do
+    it 'finds the correct solution to part 1' do
+      program_text = File.read(__dir__ + '/../input.txt')
+      result = Intcode::Computer.new(program_text).run(12, 2)
+      expect(result).to eq(12_490_719)
+    end
+
+    it 'finds the correct solution to part 2' do
+      program_text = File.read(__dir__ + '/../input.txt')
+      result = Intcode::Computer.new(program_text).run(20, 3)
+      expect(result).to eq(19_690_720)
+    end
   end
 end
