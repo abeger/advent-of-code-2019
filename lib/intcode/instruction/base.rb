@@ -29,7 +29,7 @@ module Intcode
       end
 
       def arg_value(param_index)
-        return parameters[param_index] if command.immediate_param?(param_index + 1)
+        return parameters[param_index] if command.immediate_param?(param_index)
 
         program[parameters[param_index]]
       end
