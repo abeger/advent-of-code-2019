@@ -10,10 +10,6 @@ module Intcode
         program
       end
 
-      def opcode
-        99
-      end
-
       def num_params
         0
       end

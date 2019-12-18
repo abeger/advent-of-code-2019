@@ -21,7 +21,7 @@ module Intcode
 
       command_addr = 0
       while command_addr < program.size
-        instruction = Intcode::Instruction::Base.create(self, program, command_addr)
+        instruction = Intcode::Instruction.create(self, program, command_addr)
         program = instruction.execute
 
         next_addr = instruction.next_command_addr

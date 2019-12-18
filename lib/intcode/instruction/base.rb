@@ -34,10 +34,6 @@ module Intcode
         program[parameters[param_index]]
       end
 
-      def opcode
-        raise 'Not implemented'
-      end
-
       def command
         Command.new(program[@command_addr])
       end
@@ -45,12 +41,6 @@ module Intcode
       # Returns the number of parameters this instruction takes
       def num_params
         raise 'Not implemented'
-      end
-
-      def self.create(computer, program, command_addr)
-        command = Command.new(program[command_addr])
-        clazz = INST_MAP[command.opcode]
-        clazz.new(computer, program, command_addr)
       end
     end
   end

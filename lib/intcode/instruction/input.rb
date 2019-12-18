@@ -18,10 +18,6 @@ module Intcode
       def num_params
         1
       end
-
-      def opcode
-        3
-      end
     end
   end
 end

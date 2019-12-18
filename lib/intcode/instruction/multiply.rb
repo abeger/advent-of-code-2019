@@ -9,10 +9,6 @@ module Intcode
       def operator
         :*
       end
-
-      def opcode
-        2
-      end
     end
   end
 end
