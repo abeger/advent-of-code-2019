@@ -9,4 +9,4 @@ end
 
 program_text = File.read(ARGV[0])
 
-pp Intcode::Computer.new(program_text).run
+Intcode::Computer.new(program_text).run
