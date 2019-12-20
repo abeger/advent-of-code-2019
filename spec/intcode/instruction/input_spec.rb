@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Intcode::Instruction::Input do
-  it 'outputs an immediate value to the computer' do
+  it 'receives an input from the computer' do
     program = ['3', 3, 99, 0]
     computer = double(Intcode::Computer)
     instruction = described_class.new(computer, program, 0)
