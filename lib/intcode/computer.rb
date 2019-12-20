@@ -19,6 +19,7 @@ module Intcode
       @program = program_hardcopy.clone
       @input_buffer = []
       @output_block = nil
+      @state = :not_started
     end
 
     def run(noun = nil, verb = nil, &block)
