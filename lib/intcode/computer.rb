@@ -7,33 +7,37 @@ module Intcode
   class Computer
     def initialize(program_string)
       @program_string = program_string
-      @input_buffer = []
-      @output_block = nil
+      reset
     end
 
     def program_hardcopy
       @program_hardcopy ||= @program_string.strip.split(',').map(&:to_i)
     end
 
+    def reset
+      @command_addr = 0
+      @program = program_hardcopy.clone
+      @input_buffer = []
+      @output_block = nil
+    end
+
     def run(noun = nil, verb = nil, &block)
-      program = program_hardcopy.clone
       @output_block = block
 
-      program[1] = noun unless noun.nil?
-      program[2] = verb unless verb.nil?
+      @program[1] = noun unless noun.nil?
+      @program[2] = verb unless verb.nil?
 
-      command_addr = 0
-      while command_addr < program.size
-        instruction = Intcode::Instruction.create(self, program, command_addr)
-        program = instruction.execute
+      while @command_addr < @program.size
+        instruction = Intcode::Instruction.create(self, @program, @command_addr)
+        @program = instruction.execute
 
         next_addr = instruction.next_command_addr
         break if next_addr.nil?
 
-        command_addr = next_addr
+        @command_addr = next_addr
       end
 
-      program[0]
+      @program[0]
     end
 
     # receive input

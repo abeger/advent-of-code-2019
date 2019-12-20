@@ -3,7 +3,7 @@
 RSpec.describe Intcode::Computer do
   describe '#input' do
     it 'receives an input directly from the user' do
-      computer = Intcode::Computer.new([])
+      computer = Intcode::Computer.new('')
       expect(STDIN).to receive(:gets).and_return("23\n")
       expect do
         expect(computer.input).to eq(23)
@@ -11,7 +11,7 @@ RSpec.describe Intcode::Computer do
     end
 
     it 'prompts once it has run out of input' do
-      computer = Intcode::Computer.new([])
+      computer = Intcode::Computer.new('')
       computer.add_input(16)
       expect(computer.input).to eq(16)
 
@@ -24,7 +24,7 @@ RSpec.describe Intcode::Computer do
 
   describe '#add_input' do
     it 'buffers an input' do
-      computer = Intcode::Computer.new([])
+      computer = Intcode::Computer.new('')
       computer.add_input(14)
       expect(computer.input).to eq(14)
     end
@@ -32,12 +32,12 @@ RSpec.describe Intcode::Computer do
 
   describe '#input?' do
     it 'returns false for an empty input buffer' do
-      computer = Intcode::Computer.new([])
+      computer = Intcode::Computer.new('')
       expect(computer.input?).to eq(false)
     end
 
     it 'returns true if input is buffered' do
-      computer = Intcode::Computer.new([])
+      computer = Intcode::Computer.new('')
       computer.add_input(32)
       expect(computer.input?).to eq(true)
     end
@@ -45,14 +45,14 @@ RSpec.describe Intcode::Computer do
 
   describe '#output' do
     it 'outputs data to stdout' do
-      computer = Intcode::Computer.new([])
+      computer = Intcode::Computer.new('')
       expect do
         computer.output(23)
       end.to output("23\n").to_stdout
     end
 
     it 'passes output to a passed-in proc' do
-      computer = Intcode::Computer.new([])
+      computer = Intcode::Computer.new('')
       output_value = nil
       computer.output_block = proc { |out| output_value = out }
       computer.output(45)
