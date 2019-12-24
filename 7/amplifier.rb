@@ -43,7 +43,6 @@ perms = phase_settings.permutation.to_a
 max = 0
 max_sequence = []
 perms.each do |sequence|
-
   computer_a = Intcode::Computer.new(program_text)
   computer_a.add_input(sequence[0])
   computer_a.add_input(0)

@@ -15,13 +15,10 @@ class Point
   include Comparable
 
   attr_reader :x, :y
-
-  # rubocop:disable Naming/MethodParameterName
   def initialize(x, y)
     @x = x
     @y = y
   end
-  # rubocop:enable Naming/MethodParameterName
 
   def manhattan_distance
     x.abs + y.abs
