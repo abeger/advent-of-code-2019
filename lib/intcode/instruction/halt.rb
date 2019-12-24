@@ -8,7 +8,6 @@ module Intcode
     class Halt < Intcode::Instruction::Base
       def execute
         computer.halt
-        program
       end
 
       def num_params

@@ -7,7 +7,6 @@ module Intcode
   class Computer
     attr_accessor :output_block
     attr_reader :state
-    attr_reader :program
     attr_reader :input_buffer
     attr_reader :relative_base
 
@@ -23,7 +22,7 @@ module Intcode
 
     def reset
       @command_addr = 0
-      @program = program_hardcopy.clone
+      @memory = Intcode::Memory.new(program_hardcopy.clone)
       @input_buffer = []
       @output_block = nil
       @state = :not_started
@@ -35,20 +34,28 @@ module Intcode
 
       @state = :running if @state == :not_started
 
-      @program[1] = noun unless noun.nil?
-      @program[2] = verb unless verb.nil?
+      write(1, noun) unless noun.nil?
+      write(2, verb) unless verb.nil?
 
-      while @command_addr < @program.size
-        instruction = Intcode::Instruction.create(self, @program, @command_addr)
+      while @command_addr < @memory.size
+        instruction = Intcode::Instruction.create(self, @command_addr)
         # puts instruction.class
-        @program = instruction.execute
+        instruction.execute
 
         break unless @state == :running
 
         @command_addr = instruction.next_command_addr
       end
 
-      @program[0]
+      read(0)
+    end
+
+    def read(address)
+      @memory.read(address)
+    end
+
+    def write(address, value)
+      @memory.write(address, value)
     end
 
     def wait_for_input
@@ -98,6 +105,11 @@ module Intcode
 
     def adjust_relative_base(val)
       @relative_base += val
+    end
+
+    # Convenience method
+    def memory
+      @memory.contents
     end
 
     private

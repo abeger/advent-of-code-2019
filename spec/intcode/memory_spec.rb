@@ -13,6 +13,21 @@ RSpec.describe Intcode::Memory do
       expect(mem.read(6)).to eq(0)
       expect(mem.contents).to match_array([1, 2, 3, 4, 0, 0, 0])
     end
+
+    it 'reads a range' do
+      mem = described_class.new([1, 2, 3, 4])
+      expect(mem.read(1..2)).to match_array([2, 3])
+    end
+
+    it 'reads a range partially beyond original memory' do
+      mem = described_class.new([1, 2, 3, 4])
+      expect(mem.read(2..5)).to match_array([3, 4, 0, 0])
+    end
+
+    it 'reads a range entirely beyond original memory' do
+      mem = described_class.new([1, 2, 3, 4])
+      expect(mem.read(5..7)).to match_array([0, 0, 0])
+    end
   end
 
   describe '#write' do

@@ -8,7 +8,6 @@ module Intcode
     class AdjustBase < Intcode::Instruction::Base
       def execute
         computer.adjust_relative_base(arg_value(0))
-        program
       end
 
       def num_params

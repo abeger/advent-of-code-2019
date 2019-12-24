@@ -22,10 +22,10 @@ module Intcode
       99 => Intcode::Instruction::Halt
     }.freeze
 
-    def self.create(computer, program, command_addr)
-      command = Command.new(program[command_addr])
+    def self.create(computer, command_addr)
+      command = Command.new(computer.read(command_addr))
       clazz = INSTRUCTION_MAP[command.opcode]
-      clazz.new(computer, program, command_addr)
+      clazz.new(computer, command_addr)
     end
   end
 end

@@ -5,19 +5,17 @@ module Intcode
     # Parent Instruction class. Abstract.
     class Base
       attr_reader :computer
-      attr_reader :program
       attr_reader :command_addr
 
-      def initialize(computer, program, command_addr)
+      def initialize(computer, command_addr)
         @computer = computer
-        @program = program
         @command_addr = command_addr
       end
 
       def parameters
         return [] if num_params.zero?
 
-        program[command_addr + 1..command_addr + num_params]
+        computer.read(command_addr + 1..command_addr + num_params)
       end
 
       def execute
@@ -34,11 +32,11 @@ module Intcode
         # Adjust base if relative, leave at 0 if position
         base = command.relative_param?(param_index) ? computer.relative_base : 0
 
-        program[parameters[param_index] + base]
+        computer.read(parameters[param_index] + base)
       end
 
       def command
-        Command.new(program[@command_addr])
+        Command.new(computer.read(@command_addr))
       end
 
       # Returns the number of parameters this instruction takes

@@ -8,7 +8,6 @@ module Intcode
     class Output < Intcode::Instruction::Base
       def execute
         computer.output(arg_value(0))
-        program
       end
 
       def num_params

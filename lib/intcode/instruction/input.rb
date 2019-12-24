@@ -13,10 +13,9 @@ module Intcode
           computer.wait_for_input
         else
           # puts "input #{input} -> [#{result_address}]"
-          program[result_address] = input
+          computer.write(result_address, input)
           computer.resume
         end
-        program
       end
 
       def result_address

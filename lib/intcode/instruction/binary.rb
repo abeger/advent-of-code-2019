@@ -8,8 +8,7 @@ module Intcode
     class Binary < Intcode::Instruction::Base
       def execute
         # puts "#{arg_value(0)} #{operator} #{arg_value(1)} -> [#{result_address}]"
-        program[result_address] = arg_value(0).send(operator, arg_value(1))
-        program
+        computer.write(result_address, arg_value(0).send(operator, arg_value(1)))
       end
 
       def result_address
