@@ -50,4 +50,13 @@ RSpec.describe Intcode::Command do
       expect(desc.immediate_param?(2)).to be false
     end
   end
+
+  describe '#relative_param?' do
+    it 'parses which parameters are relative' do
+      desc = described_class.new('12045')
+      expect(desc.relative_param?(0)).to be false
+      expect(desc.relative_param?(1)).to be true
+      expect(desc.relative_param?(2)).to be false
+    end
+  end
 end

@@ -22,5 +22,10 @@ module Intcode
       index = 2 - param_no
       code[index] == '1'
     end
+
+    def relative_param?(param_no)
+      index = 2 - param_no
+      code[index] == '2'
+    end
   end
 end
