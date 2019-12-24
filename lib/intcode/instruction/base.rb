@@ -31,7 +31,10 @@ module Intcode
       def arg_value(param_index)
         return parameters[param_index] if command.immediate_param?(param_index)
 
-        program[parameters[param_index]]
+        # Adjust base if relative, leave at 0 if position
+        base = command.relative_param?(param_index) ? computer.relative_base : 0
+
+        program[parameters[param_index] + base]
       end
 
       def command

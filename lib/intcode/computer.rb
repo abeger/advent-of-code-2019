@@ -9,6 +9,7 @@ module Intcode
     attr_reader :state
     attr_reader :program
     attr_reader :input_buffer
+    attr_reader :relative_base
 
     def initialize(program_string, input_mode = :auto)
       @program_string = program_string
@@ -26,6 +27,7 @@ module Intcode
       @input_buffer = []
       @output_block = nil
       @state = :not_started
+      @relative_base = 0
     end
 
     def run(noun = nil, verb = nil, &block)
