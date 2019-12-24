@@ -10,7 +10,7 @@ module Intcode
     attr_reader :program
     attr_reader :input_buffer
 
-    def initialize(program_string, input_mode = :manual)
+    def initialize(program_string, input_mode = :auto)
       @program_string = program_string
       @input_mode = input_mode
       reset

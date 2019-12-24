@@ -19,7 +19,7 @@ max_sequence = []
 perms.each do |sequence|
   input_signal = 0
   sequence.each do |setting|
-    computer = Intcode::Computer.new(program_text, :auto)
+    computer = Intcode::Computer.new(program_text)
     computer.add_input(setting)
     computer.add_input(input_signal)
     computer.run do |output|
@@ -44,20 +44,20 @@ max = 0
 max_sequence = []
 perms.each do |sequence|
 
-  computer_a = Intcode::Computer.new(program_text, :auto)
+  computer_a = Intcode::Computer.new(program_text)
   computer_a.add_input(sequence[0])
   computer_a.add_input(0)
 
-  computer_b = Intcode::Computer.new(program_text, :auto)
+  computer_b = Intcode::Computer.new(program_text)
   computer_b.add_input(sequence[1])
 
-  computer_c = Intcode::Computer.new(program_text, :auto)
+  computer_c = Intcode::Computer.new(program_text)
   computer_c.add_input(sequence[2])
 
-  computer_d = Intcode::Computer.new(program_text, :auto)
+  computer_d = Intcode::Computer.new(program_text)
   computer_d.add_input(sequence[3])
 
-  computer_e = Intcode::Computer.new(program_text, :auto)
+  computer_e = Intcode::Computer.new(program_text)
   computer_e.add_input(sequence[4])
 
   until computer_a.finished? && computer_b.finished? && computer_c.finished? && computer_d.finished? && computer_e.finished?

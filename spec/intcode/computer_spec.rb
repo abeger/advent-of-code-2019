@@ -3,18 +3,7 @@
 RSpec.describe Intcode::Computer do
   describe '#input' do
     it 'receives an input directly from the user' do
-      computer = Intcode::Computer.new('')
-      expect(STDIN).to receive(:gets).and_return("23\n")
-      expect do
-        expect(computer.input).to eq(23)
-      end.to output('Enter input: ').to_stdout
-    end
-
-    it 'prompts once it has run out of input' do
-      computer = Intcode::Computer.new('')
-      computer.add_input(16)
-      expect(computer.input).to eq(16)
-
+      computer = Intcode::Computer.new('', :manual)
       expect(STDIN).to receive(:gets).and_return("23\n")
       expect do
         expect(computer.input).to eq(23)
@@ -24,7 +13,7 @@ RSpec.describe Intcode::Computer do
 
   describe '#add_input' do
     it 'buffers an input' do
-      computer = Intcode::Computer.new('')
+      computer = Intcode::Computer.new('', :auto)
       computer.add_input(14)
       expect(computer.input).to eq(14)
     end
