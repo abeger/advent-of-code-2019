@@ -48,4 +48,20 @@ RSpec.describe Intcode::Computer do
       expect(output_value).to eq(45)
     end
   end
+
+  describe '#adjust_relative_base' do
+    it 'adds to the relative base' do
+      computer = described_class.new('')
+      expect(computer.relative_base).to eq(0)
+      computer.adjust_relative_base(45)
+      expect(computer.relative_base).to eq(45)
+    end
+
+    it 'handles negative numbers' do
+      computer = described_class.new('')
+      expect(computer.relative_base).to eq(0)
+      computer.adjust_relative_base(-12)
+      expect(computer.relative_base).to eq(-12)
+    end
+  end
 end

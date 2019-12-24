@@ -18,6 +18,7 @@ module Intcode
       6 => Intcode::Instruction::JumpIfFalse,
       7 => Intcode::Instruction::LessThan,
       8 => Intcode::Instruction::Equals,
+      9 => Intcode::Instruction::AdjustBase,
       99 => Intcode::Instruction::Halt
     }.freeze
 

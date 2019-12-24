@@ -96,6 +96,10 @@ module Intcode
       !@input_buffer.empty?
     end
 
+    def adjust_relative_base(val)
+      @relative_base += val
+    end
+
     private
 
     def load_input
