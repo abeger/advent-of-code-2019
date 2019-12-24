@@ -5,8 +5,14 @@ require_relative 'command'
 module Intcode
   # An Intcode program
   class Computer
-    def initialize(program_string)
+    attr_accessor :output_block
+    attr_reader :state
+    attr_reader :program
+    attr_reader :input_buffer
+
+    def initialize(program_string, input_mode = :manual)
       @program_string = program_string
+      @input_mode = input_mode
       reset
     end
 
@@ -25,26 +31,46 @@ module Intcode
     def run(noun = nil, verb = nil, &block)
       @output_block = block
 
+      @state = :running if @state == :not_started
+
       @program[1] = noun unless noun.nil?
       @program[2] = verb unless verb.nil?
 
       while @command_addr < @program.size
         instruction = Intcode::Instruction.create(self, @program, @command_addr)
+        # puts instruction.class
         @program = instruction.execute
 
-        next_addr = instruction.next_command_addr
-        break if next_addr.nil?
+        break unless @state == :running
 
-        @command_addr = next_addr
+        @command_addr = instruction.next_command_addr
       end
 
       @program[0]
     end
 
+    def wait_for_input
+      @state = :waiting_for_input
+    end
+
+    def halt
+      @state = :finished
+    end
+
+    def resume
+      @state = :running unless @state == :finished
+    end
+
+    def finished?
+      @state == :finished
+    end
+
     # receive input
     def input
-      data = load_input
-      return data unless data.nil?
+      if @input_mode == :auto
+        data = load_input
+        return data
+      end
 
       print 'Enter input: '
       $stdin.gets.chomp.to_i
@@ -52,6 +78,7 @@ module Intcode
 
     # output any data sent from instructions
     def output(data)
+      # puts "-> #{data}"
       if output_block
         output_block.call(data)
       else
@@ -66,8 +93,6 @@ module Intcode
     def input?
       !@input_buffer.empty?
     end
-
-    attr_accessor :output_block
 
     private
 

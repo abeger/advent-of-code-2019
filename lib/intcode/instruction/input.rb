@@ -7,7 +7,15 @@ module Intcode
     # Take user input
     class Input < Intcode::Instruction::Base
       def execute
-        program[result_address] = computer.input.to_i
+        input = computer.input
+        if input.nil?
+          # Can't get input, do nothing and tell the computer to wait
+          computer.wait_for_input
+        else
+          # puts "input #{input} -> [#{result_address}]"
+          program[result_address] = input
+          computer.resume
+        end
         program
       end
 

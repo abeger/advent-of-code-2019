@@ -7,6 +7,7 @@ module Intcode
     # End
     class Halt < Intcode::Instruction::Base
       def execute
+        computer.halt
         program
       end
 
