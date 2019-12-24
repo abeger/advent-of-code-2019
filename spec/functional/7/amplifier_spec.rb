@@ -30,7 +30,7 @@ RSpec.describe Intcode::Computer do
       expect(max_sequence).to contain_exactly(3, 1, 4, 2, 0)
     end
 
-    it 'solves part 2' do
+    it 'solves part 2', slow: true do
       phase_settings = 5.upto(9).to_a
       perms = phase_settings.permutation.to_a
 

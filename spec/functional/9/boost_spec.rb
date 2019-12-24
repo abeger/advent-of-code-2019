@@ -39,5 +39,13 @@ RSpec.describe Intcode::Computer do
         expect(output).to eq(2_932_210_790)
       end
     end
+
+    it 'solves part 2', slow: true do
+      computer = Intcode::Computer.new(program_text)
+      computer.add_input(2)
+      computer.run do |output|
+        expect(output).to eq(73_144)
+      end
+    end
   end
 end
