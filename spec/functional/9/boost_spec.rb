@@ -28,4 +28,16 @@ RSpec.describe Intcode::Computer do
       end
     end
   end
+
+  context 'puzzles' do
+    let(:program_text) { File.read('9/input.txt') }
+
+    it 'solves part 1' do
+      computer = Intcode::Computer.new(program_text)
+      computer.add_input(1)
+      computer.run do |output|
+        expect(output).to eq(2_932_210_790)
+      end
+    end
+  end
 end
