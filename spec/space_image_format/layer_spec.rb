@@ -1,4 +1,4 @@
-# frozen_array_literal: true
+# frozen_string_literal: true
 
 RSpec.describe SpaceImageFormat::Layer do
   describe '#rows' do
@@ -25,11 +25,11 @@ RSpec.describe SpaceImageFormat::Layer do
       data_array = %w[1 2 3 4 5 6]
       layer = described_class.new(data_array, 3, 2)
       expect(layer.pixel(0, 0)).to eq('1')
-      expect(layer.pixel(0, 1)).to eq('2')
-      expect(layer.pixel(0, 2)).to eq('3')
-      expect(layer.pixel(1, 0)).to eq('4')
+      expect(layer.pixel(0, 1)).to eq('4')
+      expect(layer.pixel(1, 0)).to eq('2')
       expect(layer.pixel(1, 1)).to eq('5')
-      expect(layer.pixel(1, 2)).to eq('6')
+      expect(layer.pixel(2, 0)).to eq('3')
+      expect(layer.pixel(2, 1)).to eq('6')
     end
   end
 end
