@@ -11,6 +11,8 @@ data_string = File.read(ARGV[0]).strip
 
 photo = SpaceImageFormat::Photo.new(data_string, 25, 6)
 
+puts 'Part 1'
+
 min_zeros = nil
 min_product = nil
 photo.layers.each do |layer|
@@ -22,5 +24,9 @@ photo.layers.each do |layer|
 end
 
 puts "Product of minimum layer is #{min_product}"
+puts
 
-
+puts 'Part 2'
+photo.decode.each do |row|
+  puts row.gsub('0', ' ').gsub('1', '#')
+end

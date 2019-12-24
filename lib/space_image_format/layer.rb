@@ -12,7 +12,14 @@ module SpaceImageFormat
     end
 
     def rows
-      data_array.each_slice(width)
+      @rows ||= data_array.each_slice(width).to_a
+    end
+
+    def pixel(x, y)
+      # puts "#{x}, #{y}"
+      raise IndexError if y >= rows.size || x >= rows[0].size
+
+      rows[y][x]
     end
 
     def digit_count(digit)

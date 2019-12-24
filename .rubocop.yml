@@ -9,3 +9,6 @@ Metrics/LineLength:
 
 Metrics/BlockLength:
   Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false

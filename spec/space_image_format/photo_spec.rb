@@ -19,4 +19,12 @@ RSpec.describe SpaceImageFormat::Photo do
       expect(layers[1].rows).to match_array([%w[7 8 9], %w[0 1 2]])
     end
   end
+
+  describe '#decode' do
+    it 'decodes the image into 1s and 0s' do
+      data_string = '0222112222120000'
+      photo = described_class.new(data_string, 2, 2)
+      expect(photo.decode).to match_array(%w[01 10])
+    end
+  end
 end

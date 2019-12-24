@@ -21,10 +21,24 @@ module SpaceImageFormat
                              .map { |slice| SpaceImageFormat::Layer.new(slice, width, height) }
     end
 
+    def decode
+      height.times.map do |y|
+        width.times.map do |x|
+          color(x, y)
+        end.join
+      end
+    end
+
     private
 
     def layer_length
       width * height
+    end
+
+    def color(x, y)
+      layers.find do |layer|
+        %w[0 1].include?(layer.pixel(x, y))
+      end.pixel(x, y)
     end
   end
 end
