@@ -24,7 +24,7 @@ RSpec.describe Intcode::Computer do
   end
 
   context 'puzzles' do
-    let(:program_text) { File.read('2/input.txt') }
+    let(:program_text) { File.read('02/input.txt') }
 
     it 'finds the correct solution to part 1' do
       result = Intcode::Computer.new(program_text).run(12, 2)

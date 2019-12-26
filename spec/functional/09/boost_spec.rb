@@ -30,7 +30,7 @@ RSpec.describe Intcode::Computer do
   end
 
   context 'puzzles' do
-    let(:program_text) { File.read('9/input.txt') }
+    let(:program_text) { File.read('09/input.txt') }
 
     it 'solves part 1' do
       computer = Intcode::Computer.new(program_text)

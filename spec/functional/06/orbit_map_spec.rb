@@ -2,7 +2,7 @@
 
 RSpec.describe OrbitMap::Map do
   context 'puzzles' do
-    let(:map_array) { File.readlines('6/input.txt') }
+    let(:map_array) { File.readlines('06/input.txt') }
 
     it 'solves part 1' do
       map = described_class.new(map_array)

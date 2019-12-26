@@ -2,7 +2,7 @@
 
 RSpec.describe Intcode::Computer do
   context 'puzzles' do
-    let(:program_text) { File.read('7/input.txt') }
+    let(:program_text) { File.read('07/input.txt') }
 
     it 'solves part 1' do
       phase_settings = 0.upto(4).to_a
