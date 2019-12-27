@@ -40,7 +40,6 @@ module MonitoringStation
     def <=>(other)
       return other.x <=> x unless other.x == x
 
-      pp 'there'
       other.y <=> y
     end
   end
