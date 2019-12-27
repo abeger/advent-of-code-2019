@@ -3,7 +3,7 @@
 require_relative '../lib/intcode'
 
 if ARGV.count < 1
-  puts 'Usage: ruby intcode_test.rb <input_file>'
+  puts "Usage: ruby #{__FILE__} <input_file>"
   exit
 end
 

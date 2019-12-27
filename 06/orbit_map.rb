@@ -3,7 +3,7 @@
 require_relative '../lib/orbit_map'
 
 if ARGV.count < 1
-  puts 'Usage: ruby orbit_count.rb <input_file>'
+  puts "Usage: ruby #{__FILE__} <input_file>"
   exit
 end
 
