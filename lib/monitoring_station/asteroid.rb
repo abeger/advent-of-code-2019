@@ -31,10 +31,15 @@ module MonitoringStation
 
     # Calculate direction from this asteroid to another.
     # Return special strings if horizontal/vertical
-    # :hl/:hr (left/right)
-    # "vu/:vd (up/down
     def direction(asteroid)
-      Math.atan2((asteroid.y - y), (asteroid.x - x))
+      # Negative y makes the rotation clockwise
+      degrees = Math.atan2((y - asteroid.y), (asteroid.x - x)) * 180 / Math::PI
+      # Adding 90 puts 0 at "north"
+      (degrees + 90) % 360
+    end
+
+    def distance(asteroid)
+      Math.sqrt((asteroid.y - y)**2 + (asteroid.x - x)**2)
     end
 
     def <=>(other)
