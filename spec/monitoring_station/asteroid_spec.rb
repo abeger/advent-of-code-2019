@@ -5,24 +5,24 @@ RSpec.describe MonitoringStation::Asteroid do
     it 'calculates direction to another asteroid' do
       a1 = described_class.new(3, 4)
       a2 = described_class.new(4, 5)
-      expect(a1.direction(a2)).to eq(45)
+      expect(a1.direction(a2)).to eq(135)
     end
 
     it 'calculates negative direction to another asteroid' do
       a1 = described_class.new(3, 4)
       a2 = described_class.new(2, 3)
-      expect(a1.direction(a2)).to eq(225)
+      expect(a1.direction(a2)).to eq(315)
     end
 
     it 'finds asteroid to the north' do
-      a1 = described_class.new(3, 4)
-      a2 = described_class.new(3, 5)
+      a1 = described_class.new(3, 5)
+      a2 = described_class.new(3, 4)
       expect(a1.direction(a2)).to eq(0)
     end
 
     it 'finds asteroid to the south' do
-      a1 = described_class.new(3, 4)
-      a2 = described_class.new(3, 2)
+      a1 = described_class.new(3, 2)
+      a2 = described_class.new(3, 4)
       expect(a1.direction(a2)).to eq(180)
     end
 

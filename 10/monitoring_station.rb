@@ -9,4 +9,6 @@ end
 
 map_text = File.read(ARGV[0])
 map = MonitoringStation::Map.new(map_text)
-puts "Best location is #{map.best_station_location} with #{map.best_station_location.visible_asteroids} visible asteroids"
+puts "Best location is #{map.best_station_location} with #{map.best_station_location.visible(map.asteroids)} visible asteroids"
+destruction_order = map.best_station_location.destruction_order(map.asteroids)
+puts "200th asteroid destroyed is #{destruction_order[199]}"
