@@ -8,25 +8,19 @@ module MonitoringStation
     end
 
     def asteroids
-      @asteroids ||= load_asteroids
+      @asteroids ||= parse_map
     end
 
     def best_station_location
-      asteroids.max_by(&:visible_asteroids)
+      @best_station_location ||= find_best_station_location
     end
 
     private
 
-    def load_asteroids
-      asteroids = parse_map
-
-      asteroids.size.times do |a1|
-        asteroids.size.times do |a2|
-          asteroids[a1].add_asteroid(asteroids[a2])
-        end
+    def find_best_station_location
+      asteroids.max_by do |loc|
+        loc.visible(asteroids)
       end
-
-      asteroids
     end
 
     def parse_map

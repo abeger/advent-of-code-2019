@@ -64,12 +64,10 @@ RSpec.describe MonitoringStation::Asteroid do
     end
 
     it 'calculates the correct number' do
-      asteroid_list.each do |a1|
-        asteroid_list.each do |a2|
-          a1.add_asteroid(a2)
-        end
+      visible_list = asteroid_list.map do |ast|
+        ast.visible(asteroid_list)
       end
-      expect(asteroid_list.map(&:visible_asteroids)).to match_array([7, 7, 6, 7, 7, 7, 5, 7, 8, 7])
+      expect(visible_list).to match_array([7, 7, 6, 7, 7, 7, 5, 7, 8, 7])
     end
   end
 end

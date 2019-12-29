@@ -24,7 +24,6 @@ RSpec.describe MonitoringStation::Map do
     it 'solves part 1' do
       map = described_class.new(map_text)
       loc = map.best_station_location
-      pp loc.class
       expected = MonitoringStation::Asteroid.new(19, 11)
       # expected = MonitoringStation::Asteroid.new(19, 10)
       expect(loc).to eq(expected)

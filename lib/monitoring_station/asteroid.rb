@@ -12,29 +12,33 @@ module MonitoringStation
     def initialize(x, y)
       @x = x
       @y = y
-      @asteroid_hash = {}
     end
 
     def to_s
       "(#{x}, #{y})"
     end
 
-    def add_asteroid(asteroid)
-      return if asteroid == self
-
-      @asteroid_hash[asteroid] = direction(asteroid)
+    def visible(asteroids)
+      visible_hash(asteroids).keys.size
     end
 
-    def visible_asteroids
-      @asteroid_hash.values.uniq.size
+    def visible_hash(asteroids)
+      vis_hash = Hash.new { |h, k| h[k] = [] }
+      asteroids.each do |ast|
+        next if ast == self # skip yourself
+
+        vis_hash[direction(ast)] << { asteroid: ast, distance: distance(ast) }
+      end
+      vis_hash
     end
 
     # Calculate direction from this asteroid to another.
-    # Return special strings if horizontal/vertical
+    # north = 0, south =180, east = 90, west = 270
     def direction(asteroid)
       # Negative y makes the rotation clockwise
       degrees = Math.atan2((y - asteroid.y), (asteroid.x - x)) * 180 / Math::PI
       # Adding 90 puts 0 at "north"
+      # Modding by 360 removes negatives & greater than 360
       (degrees + 90) % 360
     end
 
