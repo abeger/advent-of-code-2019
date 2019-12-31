@@ -69,9 +69,7 @@ module PaintingRobot
             current_output = :paint
           end
         end
-        if @processor.waiting_for_input?
-          @processor.add_input(@hull.current_location.color)
-        end
+        @processor.add_input(@hull.current_location.color) if @processor.waiting_for_input?
       end
     end
 
