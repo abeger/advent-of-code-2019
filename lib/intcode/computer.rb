@@ -74,6 +74,10 @@ module Intcode
       @state == :finished
     end
 
+    def waiting_for_input?
+      @state == :waiting_for_input
+    end
+
     # receive input
     def input
       if @input_mode == :auto
