@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module NBodyProblem
-  # Simulates movement of a set of planets
+  # Simulates movement of a set of moons
   class Simulation
     def initialize(position_text)
       @position_text = position_text
@@ -36,7 +36,7 @@ module NBodyProblem
           x = mdata[1].to_i
           y = mdata[2].to_i
           z = mdata[3].to_i
-          NBodyProblem::Planet.new(x, y, z)
+          NBodyProblem::Moon.new('x' => x, 'y' => y, 'z' => z)
         end
       end
     end

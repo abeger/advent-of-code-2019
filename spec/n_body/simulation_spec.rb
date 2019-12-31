@@ -11,9 +11,7 @@ RSpec.describe NBodyProblem::Simulation do
   end
 
   def expect_moon(moon, x, y, z)
-    expect(moon.pos_x).to eq(x)
-    expect(moon.pos_y).to eq(y)
-    expect(moon.pos_z).to eq(z)
+    expect(moon.positions).to eq('x' => x, 'y' => y, 'z' => z)
   end
 
   describe '#moons' do
