@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module NBodyProblem
+  # Represents a moon's 3D position and velocity
   class Moon
     def initialize(position_hash)
       @position_hash = position_hash

@@ -26,6 +26,19 @@ module NBodyProblem
       moons.sum(&:total_energy)
     end
 
+    def cycle_steps
+      csim_x = NBodyProblem::CycleSim.new(@position_text, 'x')
+      x_steps = csim_x.cycle
+
+      csim_y = NBodyProblem::CycleSim.new(@position_text, 'y')
+      y_steps = csim_y.cycle
+
+      csim_z = NBodyProblem::CycleSim.new(@position_text, 'z')
+      z_steps = csim_z.cycle
+
+      x_steps.lcm(y_steps).lcm(z_steps)
+    end
+
     private
 
     POSITION_REGEX = /<x=([-[[:digit:]]]+), y=([-[[:digit:]]]+), z=([-[[:digit:]]]+)>/.freeze

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module NBodyProblem
+  # Represents a single dimension (x, y, z)'s
+  # velocity and position
   class Dimension
     attr_reader :position, :velocity
 
