@@ -32,16 +32,7 @@ module ArcadeGame
     def run
       until @processor.finished?
         @processor.run do |output|
-          case @current_output
-          when OUTPUT_X
-            @x = output
-          when OUTPUT_Y
-            @y = output
-          when OUTPUT_TILE_ID
-            process_output(@x, @y, output)
-            print_tile(@x, @y, output)
-          end
-          @current_output = (@current_output + 1) % 3
+          process_output(output)
         end
         print_screen if display?
         @processor.add_input(@joystick.position(paddle_x, ball_x)) if @processor.waiting_for_input?
@@ -54,7 +45,19 @@ module ArcadeGame
       @processor.write(0, 2) if free_play?
     end
 
-    def process_output(x, y, value)
+    def process_output(output)
+      case @current_output
+      when OUTPUT_X
+        @x = output
+      when OUTPUT_Y
+        @y = output
+      when OUTPUT_TILE_ID
+        process_third_output(@x, @y, output)
+      end
+      @current_output = (@current_output + 1) % 3
+    end
+
+    def process_third_output(x, y, value)
       if x == -1 && y.zero?
         update_score(value)
       else

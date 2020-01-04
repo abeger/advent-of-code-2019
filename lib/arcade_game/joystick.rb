@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'io/console'
 
 module ArcadeGame
   # A joystick the user can control
   # A: left, S: neutral, D: right
   class Joystick
-    POSITION_LEFT = 'a'.freeze
-    POSITION_NEUTRAL = 's'.freeze
-    POSITION_RIGHT = 'd'.freeze
+    POSITION_LEFT = 'a'
+    POSITION_NEUTRAL = 's'
+    POSITION_RIGHT = 'd'
 
     def initialize(manual = false)
       @position = POSITION_NEUTRAL
