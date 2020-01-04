@@ -20,7 +20,6 @@ module PaintingRobot
       @hull = PaintingRobot::Hull.new
       @heading = HEADING_UP
       @processor = Intcode::Computer.new(program)
-      @log = []
     end
 
     def turn_right
