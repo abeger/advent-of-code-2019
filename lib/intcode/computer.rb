@@ -29,7 +29,7 @@ module Intcode
       @relative_base = 0
     end
 
-    def run(noun = nil, verb = nil, &block)
+    def run(noun: nil, verb: nil, &block)
       @output_block = block
 
       @state = :running if @state == :not_started

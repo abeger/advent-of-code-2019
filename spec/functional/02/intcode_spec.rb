@@ -27,12 +27,12 @@ RSpec.describe Intcode::Computer do
     let(:program_text) { File.read('02/input.txt') }
 
     it 'finds the correct solution to part 1' do
-      result = Intcode::Computer.new(program_text).run(12, 2)
+      result = Intcode::Computer.new(program_text).run(noun: 12, verb: 2)
       expect(result).to eq(12_490_719)
     end
 
     it 'finds the correct solution to part 2' do
-      result = Intcode::Computer.new(program_text).run(20, 3)
+      result = Intcode::Computer.new(program_text).run(noun: 20, verb: 3)
       expect(result).to eq(19_690_720)
     end
   end

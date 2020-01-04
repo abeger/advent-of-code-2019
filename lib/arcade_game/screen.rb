@@ -30,5 +30,41 @@ module ArcadeGame
         total + row.count(tile_id)
       end
     end
+
+    def find_x(tile_id)
+      @screen.each do |row|
+        next if row.nil?
+
+        pos = row.index(tile_id)
+        return pos unless pos.nil?
+      end
+    end
+
+    def print
+      @screen.map do |row|
+        next '' if row.nil?
+
+        row.map do |tile_id|
+          char(tile_id)
+        end.join
+      end.join("\n")
+    end
+
+    def char(tile_id)
+      case tile_id
+      when TILE_EMPTY
+        ' '
+      when TILE_WALL
+        '|'
+      when TILE_BLOCK
+        '#'
+      when TILE_HORIZ_PADDLE
+        '-'
+      when TILE_BALL
+        'o'
+      else
+        ' '
+      end
+    end
   end
 end
