@@ -1,5 +1,9 @@
 language: ruby
 rvm:
   - 2.6.5
-script:
-  - bundle exec rspec
+jobs:
+  include:
+    - script: bundle exec rspec
+      name: Testing
+    - script: bundle exec rubocop
+      name: Linting
