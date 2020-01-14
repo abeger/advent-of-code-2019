@@ -23,15 +23,14 @@ module Nanofactory
       # pp formulas[chemical]
       formulas[chemical][:ingredients].map do |ing|
         ing_required_qty = ing[:qty] * [qty / produced_qty, 1].max
-        if ing[:chemical] == CHEM_ORE
-          next ing_required_qty
-        end
+        next ing_required_qty if ing[:chemical] == CHEM_ORE
+
         requirements(ing[:chemical], ing_required_qty)
       end.sum
     end
 
     def required_ore(qty = 1)
-      return requirements(CHEM_FUEL, qty)
+      requirements(CHEM_FUEL, qty)
     end
 
     private
