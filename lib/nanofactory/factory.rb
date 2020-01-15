@@ -10,7 +10,11 @@ module Nanofactory
     end
 
     def formulas
-      @formulas ||= parse_formulas
+      @formulas ||= FormulaParser.new(@formula_text).parse
+    end
+
+    def bank
+      @bank ||= Bank.new
     end
 
     def fuel_formula
@@ -18,38 +22,17 @@ module Nanofactory
     end
 
     def requirements(chemical, qty)
-      # puts "#{qty} #{chemical}"
       produced_qty = formulas[chemical][:qty]
-      # pp formulas[chemical]
       formulas[chemical][:ingredients].map do |ing|
-        ing_required_qty = ing[:qty] * [qty / produced_qty, 1].max
+        ing_required_qty = ing[:qty] * [(qty.to_f / produced_qty).ceil, 1].max
         next ing_required_qty if ing[:chemical] == CHEM_ORE
 
         requirements(ing[:chemical], ing_required_qty)
       end.sum
     end
 
-    def required_ore(qty = 1)
-      requirements(CHEM_FUEL, qty)
-    end
-
-    private
-
-    def parse_formulas
-      @formula_text.each_line.map do |line|
-        parse_line(line.strip)
-      end.to_h
-    end
-
-    def parse_line(line)
-      regex = /(\d+) ([A-Z]+)/
-      chemicals = line.scan(regex).map { |arr| chem_hash(arr) }
-      result = chemicals.pop
-      [result[:chemical], { qty: result[:qty], ingredients: chemicals }]
-    end
-
-    def chem_hash(array)
-      { chemical: array[1], qty: array[0].to_i }
+    def required_ore
+      requirements(CHEM_FUEL, 1)
     end
   end
 end
