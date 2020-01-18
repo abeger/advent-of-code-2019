@@ -30,6 +30,12 @@ module Nanofactory
     def balance(chemical)
       @contents[chemical]
     end
+
+    def enough?(chemical, qty)
+      return true if chemical == Factory::CHEM_ORE
+
+      @contents[chemical] >= qty
+    end
   end
 
   class InsufficientFundsException < StandardError; end

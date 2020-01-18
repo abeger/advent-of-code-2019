@@ -13,26 +13,41 @@ module Nanofactory
       @formulas ||= FormulaParser.new(@formula_text).parse
     end
 
-    def bank
-      @bank ||= Bank.new
-    end
-
     def fuel_formula
       formulas[CHEM_FUEL]
     end
 
-    def requirements(chemical, qty)
-      produced_qty = formulas[chemical][:qty]
-      formulas[chemical][:ingredients].map do |ing|
-        ing_required_qty = ing[:qty] * [(qty.to_f / produced_qty).ceil, 1].max
-        next ing_required_qty if ing[:chemical] == CHEM_ORE
+    def requirements(chemical, requested_qty, bank = Bank.new)
+      formula = formulas[chemical]
+      produced_qty = formula[:qty]
+      ingredients = formula[:ingredients]
 
-        requirements(ing[:chemical], ing_required_qty)
-      end.sum
+      multiplier = (requested_qty.to_f / produced_qty).ceil
+      loop do
+        enough = true
+        ingredients.each do |chem_hash|
+          chem = chem_hash[:chemical]
+          req_qty = chem_hash[:qty] * multiplier
+          next if bank.enough?(chem, req_qty)
+
+          enough = false
+          bank = requirements(chem, req_qty - bank.balance(chem), bank)
+        end
+        break if enough
+      end
+
+      ingredients.each do |chem_hash|
+        req_qty = multiplier * chem_hash[:qty]
+        bank.withdraw(chem_hash[:chemical], req_qty)
+      end
+
+      bank.deposit(chemical, multiplier * produced_qty)
+
+      bank
     end
 
     def required_ore
-      requirements(CHEM_FUEL, 1)
+      requirements(CHEM_FUEL, 1).ore_consumed
     end
   end
 end

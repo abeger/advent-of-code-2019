@@ -27,14 +27,21 @@ RSpec.describe Nanofactory::Factory do
   context 'examples' do
     it 'solves example 1' do
       factory = described_class.new(simple_example)
-      required_ore = factory.requirements(described_class::CHEM_FUEL, 1)
-      expect(required_ore).to eq(31)
+      expect(factory.required_ore).to eq(31)
     end
 
     it 'solves example 2' do
-      factory = described_class.new(simple_example)
-      required_ore = factory.requirements(described_class::CHEM_FUEL, 1)
-      expect(required_ore).to eq(165)
+      factory = described_class.new(bigger_example)
+      expect(factory.required_ore).to eq(165)
+    end
+  end
+
+  context 'puzzles' do
+    let(:reactions_list) { File.read('14/input.txt') }
+
+    it 'solves part 1' do
+      factory = described_class.new(reactions_list)
+      expect(factory.required_ore).to eq(1_582_325)
     end
   end
 end
