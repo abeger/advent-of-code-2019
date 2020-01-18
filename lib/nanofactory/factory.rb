@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Nanofactory
+  # Turns ore into fuel
   class Factory
     CHEM_FUEL = 'FUEL'
     CHEM_ORE = 'ORE'
@@ -36,12 +37,17 @@ module Nanofactory
         break if enough
       end
 
+      bank = perform_withdrawals(ingredients, multiplier, bank)
+      bank.deposit(chemical, multiplier * produced_qty)
+
+      bank
+    end
+
+    def perform_withdrawals(ingredients, multiplier, bank)
       ingredients.each do |chem_hash|
         req_qty = multiplier * chem_hash[:qty]
         bank.withdraw(chem_hash[:chemical], req_qty)
       end
-
-      bank.deposit(chemical, multiplier * produced_qty)
 
       bank
     end

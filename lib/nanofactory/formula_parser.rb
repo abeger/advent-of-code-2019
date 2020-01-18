@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Nanofactory
+  # Turn reactions list into a hash of formulas
   class FormulaParser
     def initialize(formula_text)
       @formula_text = formula_text

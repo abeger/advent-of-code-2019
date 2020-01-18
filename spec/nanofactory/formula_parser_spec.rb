@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Nanofactory::FormulaParser do
   describe '#parse' do
     let(:simple_example) do
